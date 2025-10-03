@@ -24,43 +24,24 @@
           <input id='player-id' type='number' min='1' placeholder='t.ex. 1' style='width:120px; margin-left:8px;' />
           <button id='load-player' class='primary' style='margin-left:8px;'>Ladda spelare</button>
         </div>
+        <div id='player-meta' style='padding:0 12px 12px 12px; color:var(--muted);'>
+          <!-- Filled by JS: First Last – Team Name -->
+        </div>
         <div class='tables-split' style='display:flex; flex-direction:column; gap:12px; padding:12px;'>
           <div style='flex:1; min-width:0;'>
             <h3 style='margin:0 0 8px 0;'>Historik</h3>
             <table id='history-table'>
               <thead>
                 <tr>
-                  <th>fixture</th>
-                  <th>round</th>
-                  <th>kickoff_time</th>
-                  <th>was_home</th>
-                  <th>opponent_team</th>
-                  <th>team_h_score</th>
-                  <th>team_a_score</th>
+                  <th>#</th>
                   <th>minutes</th>
                   <th>total_points</th>
                   <th>goals_scored</th>
                   <th>assists</th>
                   <th>clean_sheets</th>
-                  <th>goals_conceded</th>
-                  <th>penalties_saved</th>
-                  <th>penalties_missed</th>
-                  <th>yellow_cards</th>
-                  <th>red_cards</th>
-                  <th>saves</th>
-                  <th>own_goals</th>
-                  <th>attacking_bonus</th>
-                  <th>defending_bonus</th>
-                  <th>winning_goals</th>
                   <th>key_passes</th>
                   <th>clearances_blocks_interceptions</th>
-                  <th>value</th>
-                  <th>selected</th>
-                  <th>transfers_in</th>
-                  <th>transfers_out</th>
-                  <th>transfers_balance</th>
-                  <th>modified</th>
-                  <th>element</th>
+                  <th>winning_goals</th>
                 </tr>
               </thead>
               <tbody></tbody>

@@ -11,12 +11,13 @@ export function getTeamInfo(id) {
 }
 
 export function playerJsonToMetaData(playerJsonFileName) {
-  const playerId = parseInt(playerJsonFileName.match(/(\d+)/)[0]);
+  const match = playerJsonFileName.match(/(\d+)/);
+  const playerId = match ? parseInt(match[1]) : NaN;
   const playerJson = JSON.parse(readFileSync(playerJsonFileName, "utf8"));
-  const firstFixture = playerJson.fixtures[0];
-  const isHome = firstFixture.is_home;
-  const homeTeam = firstFixture.team_h;
-  const awayTeam = firstFixture.team_a;
+  const firstFixture = playerJson.fixtures?.[0];
+  const isHome = firstFixture?.is_home;
+  const homeTeam = firstFixture?.team_h;
+  const awayTeam = firstFixture?.team_a;
 
   const player = getPlayerInfo(playerId);
   const team = getTeamInfo(isHome ? homeTeam : awayTeam);

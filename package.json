@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node server.js",
+    "dev:watch": "NODE_ENV=development node --watch server.js",
     "start": "NODE_ENV=production node server.js"
   },
   "dependencies": {
