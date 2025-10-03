@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang='sv'>
+  <head>
+    <meta charset='utf-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+    <title>Allalytics Demo</title>
+    <link rel='stylesheet' href='/styles.css' />
+  </head>
+  <body>
+    <header class='topbar'>
+      <div class='topbar-inner container'>
+        <div class='brand'>
+          <img src='/Viati_logo_white.svg' alt='Viati' class='logo' />
+          <div class='title'>ALLALYTICS</div>
+          <div class='subtitle'>Data är grönare än gräs</div>
+        </div>
+        <nav class='top-actions'>
+          <a class='nav-link' href='#'>Blog</a>
+        </nav>
+      </div>
+    </header>
+    <main class='container content'>
+      <section class='notice'>
+        <span class='icon'>⚠️</span>
+        <span>Har begränsat med data och mer osäkert resultat</span>
+      </section>
+      <section class='controls enhanced'>
+        <button class='filter-btn' title='Filter'>
+          <span>⚙️</span>
+        </button>
+        <input id='search' class='search' type='search' placeholder='Sök spelare...' />
+        <div class='control-group'>
+          <button class='chip'>$
+            <span class='caret'>▾</span>
+          </button>
+          <button class='chip'>Alla
+            <span class='caret'>▾</span>
+          </button>
+        </div>
+        <button id='refresh' class='primary'>Uppdatera</button>
+      </section>
+      <section class='table-wrap'>
+        <table id='data-table'>
+          <thead>
+            <tr>
+              <th class='col-id'>Id</th>
+              <th data-key='name'>Spelare</th>
+              <th data-key='value'>⚫</th>
+              <th data-key='createdAt'>26</th>
+              <th data-key='createdAt'>27</th>
+              <th data-key='createdAt'>28</th>
+              <th data-key='createdAt'>29</th>
+              <th data-key='createdAt'>30</th>
+              <th>Tot</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+      <section class='form'>
+        <h2>Lägg till rad</h2>
+        <form id='add-form'>
+          <input name='name' placeholder='Namn' required />
+          <input name='category' placeholder='Kategori' required />
+          <input name='value' type='number' placeholder='Värde' required />
+          <button type='submit' class='primary'>Lägg till</button>
+        </form>
+      </section>
+    </main>
+    <script src='/main.js' type='module'></script>
+  </body>
+</html>
