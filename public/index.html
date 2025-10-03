@@ -3,7 +3,7 @@
   <head>
     <meta charset='utf-8' />
     <meta name='viewport' content='width=device-width, initial-scale=1' />
-    <title>Allalytics Demo</title>
+    <title>Viati Fantasy football</title>
     <link rel='stylesheet' href='/styles.css' />
   </head>
   <body>
@@ -11,51 +11,85 @@
       <div class='topbar-inner container'>
         <div class='brand'>
           <img src='/Viati_logo_white.svg' alt='Viati' class='logo' />
-          <div class='title'>ALLALYTICS</div>
-          <div class='subtitle'>Data är grönare än gräs</div>
         </div>
-        <nav class='top-actions'>
-          <a class='nav-link' href='#'>Blog</a>
-        </nav>
+        <nav class='top-actions'></nav>
       </div>
     </header>
     <main class='container content'>
-      <section class='notice'>
-        <span class='icon'>⚠️</span>
-        <span>Har begränsat med data och mer osäkert resultat</span>
-      </section>
-      <section class='controls enhanced'>
-        <button class='filter-btn' title='Filter'>
-          <span>⚙️</span>
-        </button>
-        <input id='search' class='search' type='search' placeholder='Sök spelare...' />
-        <div class='control-group'>
-          <button class='chip'>$
-            <span class='caret'>▾</span>
-          </button>
-          <button class='chip'>Alla
-            <span class='caret'>▾</span>
-          </button>
+      
+      
+      <section class='table-wrap' id='player-section'>
+        <div style='padding:12px;'>
+          <label for='player-id'>Spelar-ID:</label>
+          <input id='player-id' type='number' min='1' placeholder='t.ex. 1' style='width:120px; margin-left:8px;' />
+          <button id='load-player' class='primary' style='margin-left:8px;'>Ladda spelare</button>
         </div>
-        <button id='refresh' class='primary'>Uppdatera</button>
-      </section>
-      <section class='table-wrap'>
-        <table id='data-table'>
-          <thead>
-            <tr>
-              <th class='col-id'>Id</th>
-              <th data-key='name'>Spelare</th>
-              <th data-key='value'>⚫</th>
-              <th data-key='createdAt'>26</th>
-              <th data-key='createdAt'>27</th>
-              <th data-key='createdAt'>28</th>
-              <th data-key='createdAt'>29</th>
-              <th data-key='createdAt'>30</th>
-              <th>Tot</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+        <div class='tables-split' style='display:flex; flex-direction:column; gap:12px; padding:12px;'>
+          <div style='flex:1; min-width:0;'>
+            <h3 style='margin:0 0 8px 0;'>Historik</h3>
+            <table id='history-table'>
+              <thead>
+                <tr>
+                  <th>fixture</th>
+                  <th>round</th>
+                  <th>kickoff_time</th>
+                  <th>was_home</th>
+                  <th>opponent_team</th>
+                  <th>team_h_score</th>
+                  <th>team_a_score</th>
+                  <th>minutes</th>
+                  <th>total_points</th>
+                  <th>goals_scored</th>
+                  <th>assists</th>
+                  <th>clean_sheets</th>
+                  <th>goals_conceded</th>
+                  <th>penalties_saved</th>
+                  <th>penalties_missed</th>
+                  <th>yellow_cards</th>
+                  <th>red_cards</th>
+                  <th>saves</th>
+                  <th>own_goals</th>
+                  <th>attacking_bonus</th>
+                  <th>defending_bonus</th>
+                  <th>winning_goals</th>
+                  <th>key_passes</th>
+                  <th>clearances_blocks_interceptions</th>
+                  <th>value</th>
+                  <th>selected</th>
+                  <th>transfers_in</th>
+                  <th>transfers_out</th>
+                  <th>transfers_balance</th>
+                  <th>modified</th>
+                  <th>element</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div style='flex:1; min-width:0;'>
+            <h3 style='margin:0 0 8px 0;'>Kommande matcher</h3>
+            <table id='fixtures-table'>
+              <thead>
+                <tr>
+                  <th>id</th>
+                  <th>code</th>
+                  <th>event_name</th>
+                  <th>event</th>
+                  <th>kickoff_time</th>
+                  <th>team_h</th>
+                  <th>team_h_score</th>
+                  <th>team_a</th>
+                  <th>team_a_score</th>
+                  <th>is_home</th>
+                  <th>minutes</th>
+                  <th>finished</th>
+                  <th>provisional_start_time</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
       </section>
       <section class='form'>
         <h2>Lägg till rad</h2>

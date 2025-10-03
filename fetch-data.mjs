@@ -12,7 +12,8 @@ ids.forEach(async (id) => {
     });
     const json = await response.json();
 
-    fs.writeFile(`player_${id}.json`, JSON.stringify(json), (error) => {
+    // Pretty-print JSON (2 spaces) so files are readable in VCS and editors
+    fs.writeFile(`player_${id}.json`, JSON.stringify(json, null, 2), (error) => {
       if (error) {
         console.log(`Error when saving player ${id}`, error);
       }

@@ -1,34 +1,7 @@
-const table = document.querySelector('#data-table tbody');
-const searchInput = document.querySelector('#search');
-const refreshBtn = document.querySelector('#refresh');
-const headers = Array.from(document.querySelectorAll('#data-table thead th'));
-
-let currentSort = { key: 'createdAt', dir: 'desc' };
-let lastQuery = '';
-
-async function fetchData() {
-  const params = new URLSearchParams();
-  if (lastQuery) params.set('q', lastQuery);
-  if (currentSort.key) params.set('sort', currentSort.key);
-  if (currentSort.dir) params.set('dir', currentSort.dir);
-  const res = await fetch(`/api/data?${params.toString()}`);
-  const data = await res.json();
-  renderRows(data.items || []);
-}
-
-function renderRows(items) {
-  table.innerHTML = '';
-  for (const r of items) {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${escapeHtml(r.name)}</td>
-      <td>${escapeHtml(r.category)}</td>
-      <td>${Number(r.value).toLocaleString('sv-SE')}</td>
-      <td>${new Date(r.createdAt).toLocaleString('sv-SE')}</td>
-    `;
-    table.appendChild(tr);
-  }
-}
+const fixturesTbody = document.querySelector('#fixtures-table tbody');
+const historyTbody = document.querySelector('#history-table tbody');
+const playerIdInput = document.querySelector('#player-id');
+const loadPlayerBtn = document.querySelector('#load-player');
 
 function escapeHtml(str) {
   return String(str)
@@ -39,40 +12,99 @@ function escapeHtml(str) {
     .replaceAll("'", '&#39;');
 }
 
-headers.forEach(h => {
-  h.addEventListener('click', () => {
-    const key = h.dataset.key;
-    if (!key) return;
-    if (currentSort.key === key) {
-      currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
-    } else {
-      currentSort.key = key;
-      currentSort.dir = 'asc';
-    }
-    fetchData();
-  });
+async function loadPlayer(id) {
+  if (!id) return;
+  const res = await fetch(`/api/player/${id}`);
+  if (!res.ok) {
+    fixturesTbody.innerHTML = `<tr><td colspan="7">Hittade inte spelare ${escapeHtml(id)}</td></tr>`;
+    historyTbody.innerHTML = `<tr><td colspan="11">Hittade inte spelare ${escapeHtml(id)}</td></tr>`;
+    return;
+  }
+  const data = await res.json();
+  renderFixtures(data.fixtures || []);
+  renderHistory(data.history || []);
+}
+
+function renderFixtures(items) {
+  fixturesTbody.innerHTML = '';
+  for (const f of items) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${escapeHtml(f.id)}</td>
+      <td>${escapeHtml(f.code)}</td>
+      <td>${escapeHtml(f.event_name)}</td>
+      <td>${escapeHtml(f.event)}</td>
+      <td>${f.kickoff_time ? new Date(f.kickoff_time).toLocaleString('sv-SE') : ''}</td>
+      <td>${escapeHtml(f.team_h)}</td>
+      <td>${f.team_h_score ?? ''}</td>
+      <td>${escapeHtml(f.team_a)}</td>
+      <td>${f.team_a_score ?? ''}</td>
+      <td>${f.is_home ? 'Ja' : 'Nej'}</td>
+      <td>${escapeHtml(f.minutes)}</td>
+      <td>${f.finished ? 'Ja' : 'Nej'}</td>
+      <td>${f.provisional_start_time ? 'Ja' : 'Nej'}</td>
+    `;
+    fixturesTbody.appendChild(tr);
+  }
+  if (!items.length) {
+    fixturesTbody.innerHTML = '<tr><td colspan="13">Inga kommande matcher</td></tr>';
+  }
+}
+
+function renderHistory(items) {
+  historyTbody.innerHTML = '';
+  for (const h of items) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${escapeHtml(h.fixture)}</td>
+      <td>${escapeHtml(h.round)}</td>
+      <td>${h.kickoff_time ? new Date(h.kickoff_time).toLocaleString('sv-SE') : ''}</td>
+      <td>${h.was_home ? 'Ja' : 'Nej'}</td>
+      <td>${escapeHtml(h.opponent_team)}</td>
+      <td>${escapeHtml(h.team_h_score)}</td>
+      <td>${escapeHtml(h.team_a_score)}</td>
+      <td>${escapeHtml(h.minutes)}</td>
+      <td>${escapeHtml(h.total_points)}</td>
+      <td>${escapeHtml(h.goals_scored)}</td>
+      <td>${escapeHtml(h.assists)}</td>
+      <td>${escapeHtml(h.clean_sheets)}</td>
+      <td>${escapeHtml(h.goals_conceded)}</td>
+      <td>${escapeHtml(h.penalties_saved)}</td>
+      <td>${escapeHtml(h.penalties_missed)}</td>
+      <td>${escapeHtml(h.yellow_cards)}</td>
+      <td>${escapeHtml(h.red_cards)}</td>
+      <td>${escapeHtml(h.saves)}</td>
+      <td>${escapeHtml(h.own_goals)}</td>
+      <td>${escapeHtml(h.attacking_bonus)}</td>
+      <td>${escapeHtml(h.defending_bonus)}</td>
+      <td>${escapeHtml(h.winning_goals)}</td>
+      <td>${escapeHtml(h.key_passes)}</td>
+      <td>${escapeHtml(h.clearances_blocks_interceptions)}</td>
+      <td>${escapeHtml(h.value)}</td>
+      <td>${escapeHtml(h.selected)}</td>
+      <td>${escapeHtml(h.transfers_in)}</td>
+      <td>${escapeHtml(h.transfers_out)}</td>
+      <td>${escapeHtml(h.transfers_balance)}</td>
+      <td>${h.modified ? 'Ja' : 'Nej'}</td>
+      <td>${escapeHtml(h.element)}</td>
+    `;
+    historyTbody.appendChild(tr);
+  }
+  if (!items.length) {
+    historyTbody.innerHTML = '<tr><td colspan="31">Inga tidigare matcher</td></tr>';
+  }
+}
+
+loadPlayerBtn.addEventListener('click', () => {
+  const id = Number(playerIdInput.value);
+  if (!Number.isFinite(id) || id <= 0) return;
+  loadPlayer(id);
 });
 
-let searchDebounce;
-searchInput.addEventListener('input', () => {
-  clearTimeout(searchDebounce);
-  searchDebounce = setTimeout(() => {
-    lastQuery = searchInput.value.trim();
-    fetchData();
-  }, 250);
+playerIdInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    const id = Number(playerIdInput.value);
+    if (!Number.isFinite(id) || id <= 0) return;
+    loadPlayer(id);
+  }
 });
-
-refreshBtn.addEventListener('click', () => fetchData());
-
-const addForm = document.querySelector('#add-form');
-addForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const form = new FormData(addForm);
-  const payload = { name: form.get('name'), category: form.get('category'), value: Number(form.get('value')) };
-  const res = await fetch('/api/data', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-  if (!res.ok) { alert('Misslyckades att lägga till rad'); return; }
-  addForm.reset();
-  fetchData();
-});
-
-fetchData();
